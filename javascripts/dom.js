@@ -8,7 +8,7 @@ const domString = (movieArray) => {
         }
             printString +=      `<div class="col-sm-6 col-md-4">
                                     <div class="thumbnail">
-                                        <img src="https://media.giphy.com/media/5M2ZVnDZOwJzi/giphy.gif" alt="">
+                                        <img src="" alt="">
                                         <div class="caption">
                                         <h3>${movieArray[i].original_title}</h3>
                                         <p>${movieArray[i].overview}</p>
@@ -16,7 +16,7 @@ const domString = (movieArray) => {
                                         </div>
                                     </div>
                                 </div>`;
-        if (i % 3 === 2) {
+        if (i % 3 === 2 || i === movieArray.length - 1) {
             printString +=  `</div>`;
         }
     }
