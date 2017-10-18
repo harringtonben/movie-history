@@ -1,6 +1,7 @@
 "use strict";
 
 let tmdbKey;
+let imgConfig;
 const dom = require("./dom");
 
 
@@ -12,6 +13,26 @@ const searchTMDB = (query) => {
         }).fail((error) => {
             reject(error);
         });
+    });
+};
+
+// sets up promise for /configuration route
+const tmdbConfiguration = () => {
+    return new Promise((resolve, reject) => {
+        $.ajax(`https://api.themoviedb.org/3/configuration?api_key=${tmdbKey}`).done((data) => {
+            resolve(data.images);
+        }).fail((error) => {
+            reject(error);
+        });
+    });
+};
+
+// executes tmdbConfiguration. On successful result it saves result.images to private variable imgConfig
+const getConfig = () => {
+    tmdbConfiguration().then((results) => {
+        imgConfig = results;
+    }).catch((error) => {
+        console.log(error);
     });
 };
 
@@ -27,12 +48,13 @@ const searchMovies = (query) => {
 // accepts a string, this function sets the private variable tmdbKey to the string passed in
 const setKey = (apiKey) => {
     tmdbKey = apiKey;
+    getConfig();
 };
 
 // accepts an array, calls dom.domString and passes the array 
 const showResults = (movieArray) => {
     dom.clearDom();
-    dom.domString(movieArray);
+    dom.domString(movieArray, imgConfig);
 };
 
 module.exports = {searchMovies, setKey};
