@@ -28,4 +28,9 @@ const printToDom = (strang) => {
     $("#movies").append(strang);
 };
 
-module.exports = {domString};
+const clearDom = () => {
+    $("#movies").empty();
+    $("#searchBar").val("");
+};
+
+module.exports = {domString, clearDom};
