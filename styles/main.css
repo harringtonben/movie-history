@@ -1,2 +1,8 @@
 body {
   background-color: lightgrey; }
+
+#myMovies {
+  text-align: center; }
+
+#authScreen {
+  text-align: center; }

@@ -77,7 +77,26 @@ const pressEnter = () => {
     });
 };
 
-module.exports = {pressEnter};
+const myLinks = () => {
+    $(document).click((e) => {
+       if (e.target.id === "moviesearch") {
+            $("#search").removeClass("hidden");
+            $("#myMovies").addClass("hidden");
+            $("#authScreen").addClass("hidden");
+       } else if (e.target.id === "moviesLink") {
+            $("#search").addClass("hidden");
+            $("#myMovies").removeClass("hidden");
+            $("#authScreen").addClass("hidden");
+       } else if (e.target.id === "authenticate") {
+            $("#search").addClass("hidden");
+            $("#myMovies").addClass("hidden");
+            $("#authScreen").removeClass("hidden");
+       }
+
+    });
+};
+
+module.exports = {pressEnter, myLinks};
 },{"./tmdb":5}],4:[function(require,module,exports){
 "use strict";
 
@@ -85,6 +104,7 @@ let events = require("./events");
 let apiKeys = require("./apikeys");
 
 apiKeys.retrieveKeys();
+events.myLinks();
 events.pressEnter();
 },{"./apikeys":1,"./events":3}],5:[function(require,module,exports){
 "use strict";
