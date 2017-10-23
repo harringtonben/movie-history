@@ -30,23 +30,36 @@
                     </ul>
                     
                     <ul class="nav navbar-nav navbar-right">
-                      <li><a href="#">Authentication</a></li>
-                      <li><a href="#">My Movies</a></li>
-                      <li><a href="#">Search</a></li>
+                      <li><a id="authenticate">Authentication</a></li>
+                      <li><a id="moviesLink">My Movies</a></li>
+                      <li><a id="moviesearch">Search</a></li>
                       
                     </ul>
                   </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
               </nav>
 
-              <div class="form-group col-xs-6 col-xs-offset-3">
+              
+            
+            <div id="myMovies" class="container hidden">
+              <h1>My Movies</h1>
+            </div>
+            <div id="authScreen" class="">
+                <h1>Sign In</h1>
+                <button><img src="./images/googlebutton.png"></button>
+              </div>
+            <div id="search" class="hidden">
+                <div class="form-group col-xs-6 col-xs-offset-3">
                     <div class="input-group">
                         <span class="input-group-addon" ><span class="glyphicon glyphicon-search"></span></span>
                         <input type="text" class="form-control" aria-describedby="start-date" id="searchBar" placeholder="Search...">    
                     </div>
+                </div>
+              <div id="movies" class="container"></div>
             </div>
             
-            <div id="movies" class="container"></div>
+
+            
             
 <script type="text/javascript" src="./lib/node_modules/jquery/dist/jquery.js"></script>
 <script type="text/javascript" src="./lib/node_modules/bootstrap/dist/js/bootstrap.js"></script>
