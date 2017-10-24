@@ -31,7 +31,7 @@ module.exports = {retrieveKeys};
 },{"./firebaseApi":4,"./tmdb":6}],2:[function(require,module,exports){
 "use strict";
 
-const domString = (movieArray, imgConfig) => {
+const domString = (movieArray, imgConfig, divName) => {
     let printString = ``;
     for (let i = 0; i < movieArray.length; i++) {
         if ( i % 3 === 0 ) {
@@ -39,9 +39,9 @@ const domString = (movieArray, imgConfig) => {
         }
             printString +=      `<div class="col-sm-6 col-md-4">
                                     <div class="thumbnail">
-                                        <img src="${imgConfig.base_url}w300${movieArray[i].poster_path}" alt="">
+                                        <img src="${imgConfig.base_url}/w300/${movieArray[i].poster_path}" alt="">
                                         <div class="caption">
-                                        <h3>${movieArray[i].original_title}</h3>
+                                        <h3>${movieArray[i].title}</h3>
                                         <p>${movieArray[i].overview}</p>
                                         <p><a href="#" class="btn btn-primary" role="button">Review</a> <a href="#" class="btn btn-default" role="button">Add To Wishlist</a></p>
                                         </div>
@@ -52,15 +52,15 @@ const domString = (movieArray, imgConfig) => {
         }
     }
             
-    printToDom(printString);
+    printToDom(printString, divName);
 };
 
-const printToDom = (strang) => {
-    $("#movies").append(strang);
+const printToDom = (strang, divName) => {
+    $(`#${divName}`).append(strang);
 };
 
-const clearDom = () => {
-    $("#movies").empty();
+const clearDom = (divName) => {
+    $(`#${divName}`).empty();
     $("#searchBar").val("");
 };
 
@@ -70,6 +70,7 @@ module.exports = {domString, clearDom};
 
 const tmdb = require("./tmdb");
 const firebaseApi = require("./firebaseApi");
+const dom = require("./dom");
 
 const pressEnter = () => {
     $(document).keypress((e) => {
@@ -91,6 +92,12 @@ const myLinks = () => {
             $("#search").addClass("hidden");
             $("#myMovies").removeClass("hidden");
             $("#authScreen").addClass("hidden");
+            firebaseApi.getMovieList().then((results) => {
+                dom.clearDom("moviesMine");
+                dom.domString(results,tmdb.getImgConfig(),"moviesMine");
+            }).catch((error) => {
+                console.log(error);
+            });
        } else if (e.target.id === "authenticate") {
             $("#search").addClass("hidden");
             $("#myMovies").addClass("hidden");
@@ -110,8 +117,9 @@ const googleAuth = () => {
     });
 };
 
+
 module.exports = {pressEnter, myLinks, googleAuth};
-},{"./firebaseApi":4,"./tmdb":6}],4:[function(require,module,exports){
+},{"./dom":2,"./firebaseApi":4,"./tmdb":6}],4:[function(require,module,exports){
 "use strict";
 
 let firebaseKey = "";
@@ -135,7 +143,25 @@ let authenticateGoogle = () => {
     });
   };
 
-module.exports = {setKey, authenticateGoogle};
+const getMovieList = () => {
+    let movies = [];
+    return new Promise((resolve, reject) => {
+        $.ajax(`${firebaseKey.databaseURL}/movies.json?orderBy="uid"&equalTo="${userUid}"`).then((fbMovies) => {
+            if (fbMovies != null) {
+                Object.keys(fbMovies).forEach((key) => {
+                    fbMovies[key].id = key;
+                    movies.push(fbMovies[key]);
+                });    
+            }
+            resolve(movies);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+
+module.exports = {setKey, authenticateGoogle, getMovieList};
 },{}],5:[function(require,module,exports){
 "use strict";
 
@@ -204,9 +230,13 @@ const setKey = (apiKey) => {
 
 // accepts an array, calls dom.domString and passes the array 
 const showResults = (movieArray) => {
-    dom.clearDom();
-    dom.domString(movieArray, imgConfig);
+    dom.clearDom("movies");
+    dom.domString(movieArray, imgConfig, "movies");
 };
 
-module.exports = {searchMovies, setKey};
+const getImgConfig = () => {
+    return imgConfig;
+};
+
+module.exports = {searchMovies, setKey, getImgConfig};
 },{"./dom":2}]},{},[5]);
