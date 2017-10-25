@@ -9,14 +9,14 @@ const domString = (movieArray, imgConfig, divName, search) => {
             printString +=      `<div class="col-sm-6 col-md-4 movie">
                                     <div class="thumbnail">`;
             if (!search) {
-            printString +=          `<button class="btn btn-default text-right" data-firebase-id="${movieArray[i].id}                                     ">X</button>`;
+            printString +=          `<button class="btn btn-default delete" data-firebase-id="${movieArray[i].id}">X</button>`;
             }
-            printString +=          `<img class="poster_path" src="${imgConfig.base_url}/w300/${movieArray[i].poster_path}"                               alt="">
+            printString +=          `<img class="poster_path" src="${imgConfig.base_url}/w300/${movieArray[i].poster_path}"     alt="">
                                         <div class="caption">
                                         <h3 class="title">${movieArray[i].title}</h3>
                                         <p class="overview">${movieArray[i].overview}</p>`;
             if (search) {
-            printString +=              `<p><a class="btn btn-primary review" role="button">Review</a> <a class="btn btn-default                              wishlist" role="button">Add To Wishlist</a></p>`;
+            printString +=              `<p><a class="btn btn-primary review" role="button">Review</a> <a class="btn btn-default wishlist" role="button">Add To Wishlist</a></p>`;
             } else {
             printString +=              `<p>Rating: ${movieArray[i].rating}</p>`;
             }
