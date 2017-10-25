@@ -43,7 +43,7 @@ const domString = (movieArray, imgConfig, divName) => {
                                         <div class="caption">
                                         <h3 class="title">${movieArray[i].title}</h3>
                                         <p class="overview">${movieArray[i].overview}</p>
-                                        <p><a class="btn btn-primary" role="button">Review</a> <a class="btn btn-default wishlist" role="button">Add To Wishlist</a></p>
+                                        <p><a class="btn btn-primary review" role="button">Review</a> <a class="btn btn-default wishlist" role="button">Add To Wishlist</a></p>
                                         </div>
                                     </div>
                                 </div>`;
@@ -138,8 +138,36 @@ const wishlistEvents = () => {
     });
 };
 
+const reviewEvents = () => {
+    $("body").on("click", ".review", (e) => {
+        let mommy = e.target.closest(".movie");
 
-module.exports = {pressEnter, myLinks, googleAuth, wishlistEvents};
+        let newMovie = {
+            "title": $(mommy).find(".title").html(),
+            "overview": $(mommy).find(".overview").html(),
+            "poster_path": $(mommy).find(".poster_path").attr("src").split("/").pop(),
+            "rating": 0,
+            "isWatched": true,
+            "uid": ""
+        };
+    
+        firebaseApi.saveMovie(newMovie).then((results) => {
+            $(mommy).remove();
+        }).catch((error) => {
+            console.log("error in Save movie", error);
+        });
+    });
+};
+
+const init = () => {
+    myLinks();
+    googleAuth();
+    pressEnter();
+    wishlistEvents();
+    reviewEvents();
+};
+
+module.exports = {init};
 },{"./dom":2,"./firebaseApi":4,"./tmdb":6}],4:[function(require,module,exports){
 "use strict";
 
@@ -204,10 +232,7 @@ let events = require("./events");
 let apiKeys = require("./apikeys");
 
 apiKeys.retrieveKeys();
-events.myLinks();
-events.googleAuth();
-events.pressEnter();
-events.wishlistEvents();
+events.init();
 
 
 },{"./apikeys":1,"./events":3}],6:[function(require,module,exports){

@@ -12,7 +12,7 @@ const domString = (movieArray, imgConfig, divName) => {
                                         <div class="caption">
                                         <h3 class="title">${movieArray[i].title}</h3>
                                         <p class="overview">${movieArray[i].overview}</p>
-                                        <p><a class="btn btn-primary" role="button">Review</a> <a class="btn btn-default wishlist" role="button">Add To Wishlist</a></p>
+                                        <p><a class="btn btn-primary review" role="button">Review</a> <a class="btn btn-default wishlist" role="button">Add To Wishlist</a></p>
                                         </div>
                                     </div>
                                 </div>`;

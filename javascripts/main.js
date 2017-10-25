@@ -4,8 +4,5 @@ let events = require("./events");
 let apiKeys = require("./apikeys");
 
 apiKeys.retrieveKeys();
-events.myLinks();
-events.googleAuth();
-events.pressEnter();
-events.wishlistEvents();
+events.init();
 
