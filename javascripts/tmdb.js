@@ -54,7 +54,7 @@ const setKey = (apiKey) => {
 // accepts an array, calls dom.domString and passes the array 
 const showResults = (movieArray) => {
     dom.clearDom("movies");
-    dom.domString(movieArray, imgConfig, "movies");
+    dom.domString(movieArray, imgConfig, "movies", true);
 };
 
 const getImgConfig = () => {
