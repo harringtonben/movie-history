@@ -6,13 +6,13 @@ const domString = (movieArray, imgConfig, divName) => {
         if ( i % 3 === 0 ) {
             printString +=  `<div class="row">`;
         }
-            printString +=      `<div class="col-sm-6 col-md-4">
+            printString +=      `<div class="col-sm-6 col-md-4 movie">
                                     <div class="thumbnail">
-                                        <img src="${imgConfig.base_url}/w300/${movieArray[i].poster_path}" alt="">
+                                        <img class="poster_path" src="${imgConfig.base_url}/w300/${movieArray[i].poster_path}" alt="">
                                         <div class="caption">
-                                        <h3>${movieArray[i].title}</h3>
-                                        <p>${movieArray[i].overview}</p>
-                                        <p><a href="#" class="btn btn-primary" role="button">Review</a> <a href="#" class="btn btn-default" role="button">Add To Wishlist</a></p>
+                                        <h3 class="title">${movieArray[i].title}</h3>
+                                        <p class="overview">${movieArray[i].overview}</p>
+                                        <p><a class="btn btn-primary" role="button">Review</a> <a class="btn btn-default wishlist" role="button">Add To Wishlist</a></p>
                                         </div>
                                     </div>
                                 </div>`;
