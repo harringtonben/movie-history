@@ -37,13 +37,13 @@ const domString = (movieArray, imgConfig, divName) => {
         if ( i % 3 === 0 ) {
             printString +=  `<div class="row">`;
         }
-            printString +=      `<div class="col-sm-6 col-md-4">
+            printString +=      `<div class="col-sm-6 col-md-4 movie">
                                     <div class="thumbnail">
-                                        <img src="${imgConfig.base_url}/w300/${movieArray[i].poster_path}" alt="">
+                                        <img class="poster_path" src="${imgConfig.base_url}/w300/${movieArray[i].poster_path}" alt="">
                                         <div class="caption">
-                                        <h3>${movieArray[i].title}</h3>
-                                        <p>${movieArray[i].overview}</p>
-                                        <p><a href="#" class="btn btn-primary" role="button">Review</a> <a href="#" class="btn btn-default" role="button">Add To Wishlist</a></p>
+                                        <h3 class="title">${movieArray[i].title}</h3>
+                                        <p class="overview">${movieArray[i].overview}</p>
+                                        <p><a class="btn btn-primary" role="button">Review</a> <a class="btn btn-default wishlist" role="button">Add To Wishlist</a></p>
                                         </div>
                                     </div>
                                 </div>`;
@@ -117,8 +117,29 @@ const googleAuth = () => {
     });
 };
 
+const wishlistEvents = () => {
+    $("body").on("click", ".wishlist", (e) => {
+        let mommy = e.target.closest(".movie");
 
-module.exports = {pressEnter, myLinks, googleAuth};
+        let newMovie = {
+            "title": $(mommy).find(".title").html(),
+            "overview": $(mommy).find(".overview").html(),
+            "poster_path": $(mommy).find(".poster_path").attr("src").split("/").pop(),
+            "rating": 0,
+            "isWatched": false,
+            "uid": ""
+        };
+    
+        firebaseApi.saveMovie(newMovie).then((results) => {
+            $(mommy).remove();
+        }).catch((error) => {
+            console.log("error in Save movie", error);
+        });
+    });
+};
+
+
+module.exports = {pressEnter, myLinks, googleAuth, wishlistEvents};
 },{"./dom":2,"./firebaseApi":4,"./tmdb":6}],4:[function(require,module,exports){
 "use strict";
 
@@ -160,8 +181,22 @@ const getMovieList = () => {
     });
 };
 
+const saveMovie = (movie) => {
+    movie.uid = userUid;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            method: "POST",
+            url: `${firebaseKey.databaseURL}/movies.json`,
+            data: JSON.stringify(movie)
+        }).then((result) => {
+            resolve(result);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
 
-module.exports = {setKey, authenticateGoogle, getMovieList};
+module.exports = {setKey, authenticateGoogle, getMovieList, saveMovie};
 },{}],5:[function(require,module,exports){
 "use strict";
 
@@ -172,6 +207,7 @@ apiKeys.retrieveKeys();
 events.myLinks();
 events.googleAuth();
 events.pressEnter();
+events.wishlistEvents();
 
 
 },{"./apikeys":1,"./events":3}],6:[function(require,module,exports){
