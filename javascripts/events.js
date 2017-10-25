@@ -26,7 +26,7 @@ const myLinks = () => {
             $("#authScreen").addClass("hidden");
             firebaseApi.getMovieList().then((results) => {
                 dom.clearDom("moviesMine");
-                dom.domString(results,tmdb.getImgConfig(),"moviesMine");
+                dom.domString(results,tmdb.getImgConfig(),"moviesMine", false);
             }).catch((error) => {
                 console.log(error);
             });
